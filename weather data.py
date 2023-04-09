@@ -59,11 +59,12 @@ weather_data_files = []
 for state in data:
     json_filename = f"{state['state']}.json"
 
-    state_weather = {}
+    state_weather = []
 
     for id in data_type_ids:
+        state_weather.append(id)
         state_weather_data = get_state_monthly_weather(state, id)
-        state_weather[id] = state_weather_data
+        state_weather.append(state_weather_data)
 
     with open(f'weather_data/{json_filename}', 'w') as file:
         json.dump(state_weather, file)
