@@ -1,18 +1,55 @@
 import json
 
 
-
 class Node:
+    """
+    A class representing a node in a tree.
+
+    Instance Attributes
+    -------------------
+    name: string
+        The name of the node.
+    children: list
+        A list of the node's children.
+    """
     def __init__(self, name):
         self.name = name
         self.children = []
 
     def add_child(self, child_name):
+        """
+        Adds a child node with the given name to the current node.
+        Returns the newly created child node.
+
+        Parameters
+        ------------
+        child_name: string
+            The name of the child node to be created.
+
+        Returns
+        ------------
+        Node: Node object
+            The newly created child node.
+        """
         child = Node(child_name)
         self.children.append(child)
         return child
 
     def get_child(self, val):
+        """
+        Returns the child node with the given name.
+        If the child does not exist, returns None.
+
+        Parameters
+        ------------
+        val: string
+            The name of the child node to retrieve.
+
+        Returns
+        ------------
+        Node or None:
+            The child node with the given name, or None if it does not exist.
+        """
         if val in self.children:
             return self.children[val]
         else:
@@ -20,6 +57,31 @@ class Node:
 
 
 def construct_state_tree(state_info, coal_data, elec_data, gas_data, temp_data, prec_data, wind_data):
+    """
+    Constructs a tree representation of a state's energy and weather data, using the provided data dictionaries.
+
+    Parameters
+    ------------
+    state_info: dict
+        A dictionary containing information about the state, such as its name and abbreviation.
+    coal_data: dict
+        A dictionary containing quarterly coal consumption data for the state, retrieved from the EIA API.
+    elec_data: dict
+        A dictionary containing monthly electricity generation data for the state, retrieved from the EIA API.
+    gas_data: dict
+        A dictionary containing monthly natural gas consumption data for the state, retrieved from the EIA API.
+    temp_data: dict
+        A dictionary containing monthly average temperature data for the state, retrieved from the NOAA API.
+    prec_data: dict
+        A dictionary containing monthly precipitation data for the state, retrieved from the NOAA API.
+    wind_data: dict
+        A dictionary containing monthly wind speed data for the state, retrieved from the NOAA API.
+
+    Returns
+    ------------
+    Node:
+        A tree data structure representing the state's energy and weather data
+    """
     state = Node(state_info['state'])
 
     energy = state.add_child('Energy')
@@ -83,6 +145,19 @@ def construct_state_tree(state_info, coal_data, elec_data, gas_data, temp_data, 
 
 
 def get_data_from_cache(filename):
+    """
+    Given a filename, reads data from a JSON file and returns it as a Python object.
+
+    Parameters
+    ------------
+    filename: string
+        The path of the JSON file to read.
+
+    Returns
+    ------------
+    data: list
+        A list representing the data read from the file.
+    """
     with open(filename, 'r') as file:
         data = json.load(file)
 
@@ -90,6 +165,21 @@ def get_data_from_cache(filename):
 
 
 def main():
+    """
+    Load data from cache and construct state trees for each state.
+
+    The function loads state information and energy and weather data for each state from cache files.
+    It then constructs a state tree for each state using the data, and adds each state tree as a
+    child of a root node representing the USA.
+
+    Parameters
+    ------------
+    None
+
+    Returns
+    ------------
+    None
+    """
     states_info = get_data_from_cache('state info.json')
     coal_data = get_data_from_cache('energy_data_cache/coal_data.json')
     electricity_data = get_data_from_cache('energy_data_cache/electricity_data.json')

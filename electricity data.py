@@ -4,6 +4,25 @@ import time
 
 
 def get_electricity_data(api_key, state_info_data):
+    """
+    Retrieves monthly electricity consumption data for each state in the provided state information data using the EIA API,
+    and returns the results as a list of dictionaries.
+
+    Parameters
+    ------------
+    api_key: string
+        The API key for authentication with the EIA API.
+    state_info_data: list
+        A list of dictionaries containing state information data, including state
+        abbreviations and names.
+
+    Returns
+    ------------
+    electricity_data: list
+        A list of dictionaries containing coal consumption data for each state, with keys
+        'state' and 'data'. The 'data' key maps to a list of dictionaries containing consumption data for each month, with
+        keys 'date', 'location', 'location_detail', 'value', and 'units'.
+    """
     electricity_data = []
 
     for state in state_info_data:
@@ -41,6 +60,17 @@ def get_electricity_data(api_key, state_info_data):
 
 
 def main():
+    """
+    Fetches data on electricity consumption and quality for each state using the EIA API and stores the data in a JSON file.
+
+    Parameters
+    ------------
+    None
+
+    Returns
+    ------------
+    None
+    """
     api_key = "jCnI1kooKyyN0nuTyus3NlQS7hyHMVgcZvm3MTrR"
 
     with open('state info.json', 'r') as file:
@@ -48,7 +78,7 @@ def main():
 
     electricity_data = get_electricity_data(api_key, data)
 
-    with open('electricity_data.json', 'w') as file:
+    with open('energy_data_cache/electricity_data.json', 'w') as file:
         json.dump(electricity_data, file)
 
 

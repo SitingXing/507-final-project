@@ -4,6 +4,31 @@ import time
 
 
 def get_weather_data(url, headers, params):
+    """
+    Sends a GET request to the specified URL with the given headers and query parameters,
+    and returns the JSON response data.
+
+    Parameter
+    ------------
+    url: string
+        The URL to send the request to.
+    headers: dict
+        A dictionary of headers to include in the request, including token to access the api.
+    params: dict
+        A dictionary of query parameters to include in the request.
+
+    Returns
+    ------------
+    data: dict
+        The JSON response data from the API.
+
+    Notes
+    ------------
+    If the response status code is 429 (Too Many Requests) or 503 (Service Unavailable),
+    the function will wait for 60 seconds before retrying the request.
+    If the response status code is not 200, an error message will be printed and
+    None will be returned.
+    """
     response = requests.get(url, headers=headers, params=params)
     if response.status_code == 200:
         data = response.json()
@@ -18,6 +43,34 @@ def get_weather_data(url, headers, params):
 
 
 def get_state_monthly_weather(state_info, data_type_id, token, start_date, end_date):
+    """
+    Retrieves monthly weather data for a specific state, data type, and time period.
+
+    Parameters
+    ------------
+    state_info: dict
+        A dictionary containing information about the state, including its FIPS code and station ID.
+    data_type_id: string
+        The ID of the data type to retrieve (e.g. 'TAVG' for average temperature).
+    token: string
+        The API token to use for authentication.
+    start_date: string
+        The start date of the time period to retrieve data for, in 'YYYY-MM-DD' format.
+    end_date: string
+        The end date of the time period to retrieve data for, in 'YYYY-MM-DD' format.
+
+    Returns
+    ------------
+    state_weather_data: list
+    A list of dictionaries containing the monthly weather data for the specified state,
+    with each dictionary representing a single month and containing the following keys: 'date', 'value', 'station',
+    'attributes'.
+
+    Note
+    ------------
+    The function calls the get_weather_data() function to retrieve the data from the NOAA API.
+    The date in each result is reformatted to 'YYYY-MM' format.
+    """
     base_url = 'https://www.ncdc.noaa.gov/cdo-web/api/v2/data?'
     headers = {"token": token}
 
@@ -43,8 +96,20 @@ def get_state_monthly_weather(state_info, data_type_id, token, start_date, end_d
 
 
 def main():
+    """
+    Retrieves monthly weather data for multiple states and data types from the NOAA API, and saves the results to JSON
+    files.
+
+    Parameters
+    ------------
+    None
+
+    Returns
+    ------------
+    None
+    """
     token = 'GdMKePAkDaODqUBDSWbvYnpxcGPsTEfF'
-    start_date = '2018-01-01'
+    start_date = '2015-01-01'
     end_date = '2022-12-31'
 
     data_type_ids = ['TAVG', 'PRCP', 'AWND']
@@ -62,11 +127,11 @@ def main():
             id_data.append(state_weather)
 
         if id == 'TAVG':
-            file_name = "temperature_data.json"
+            file_name = "weather_data_cache/temperature_data.json"
         elif id == 'PRCP':
-            file_name = "precipitation_data.json"
+            file_name = "weather_data_cache/precipitation_data.json"
         else:
-            file_name = "wind_data.json"
+            file_name = "weather_data_cache/wind_data.json"
 
         with open(file_name, 'w') as file:
             json.dump(id_data, file)
