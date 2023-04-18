@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Tables</title>
+	<style type="text/css">
+		*{
+			font-family: sans-serif;
+			background-color: rgb(234, 234, 234);
+		}
+
+		div{
+			margin: 30%;
+			margin-top: 5%;
+		}
+
+		h1{
+			margin-top: 0;
+			padding: 0.75%;
+			padding-top: 2%;
+			padding-left: 2%;
+			color: white;
+			background-color: #065C38;
+			font-size: 1.45rem;
+			font-weight: 500;
+		}
+
+		a{
+			position: fixed;
+			top: 4%;
+			right: 1%;
+			background-color: white;
+			border: solid #065C38 2px;
+			border-radius: 25px;
+			padding: 0.5% 1%;
+			cursor: pointer;
+			text-decoration: none;
+			color: #065C38;
+		}
+
+		a:hover{
+			background-color: #abbeb6;
+			color: white;
+		}
+
+		h4{
+			text-transform: capitalize;
+			color: #065C38;
+			font-size: 1.25rem;
+			font-weight: 600;
+			margin-bottom: 10px;
+		}
+
+		table{
+			width: 100%;
+			border-collapse: collapse;
+			margin-bottom: 10%;
+		}
+
+		th{
+			border: solid 0px;
+			border-collapse: collapse;
+			padding: 5px;
+			background-color: #065C38;
+			color: white;
+		}
+
+		td{
+			border: solid 1px #849b91;
+			text-align: center;
+		}
+	</style>
+</head>
+<body>
+	<h1>Results</h1>
+	<a href="{{ url_for('back') }}">Back to Search</a>
+	<div>
+		{% if energy_type != '' and weather_type == '' %}
+		<h4>{{ energy_type }}</h4>
+		<table>
+			<thead>
+				<tr>
+					<th>Time</th>
+					<th>Value</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% if data1.children is iterable %}
+					{% for item in data1.children %}
+					<tr>
+						<td>{{ item.name }}</td>
+						<td>{{ item.children[0].name }}</td>
+					</tr>
+					{% endfor %}
+				{% else %}
+					<tr>
+						<td>{{ data1.name }}</td>
+						<td>{{ data1.children[0].name }}</td>
+					</tr>
+				{% endif %}
+			</tbody>
+		</table>
+		{% endif %}
+		{% if energy_type == '' and weather_type != '' %}
+		<h4>{{ weather_type }}</h4>
+		<table>
+			<thead>
+				<tr>
+					<th>Time</th>
+					<th>Value</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% if data2.children is iterable %}
+					{% for item in data2.children %}
+					<tr>
+						<td>{{ item.name }}</td>
+						<td>{{ item.children[0].name }}</td>
+					</tr>
+					{% endfor %}
+				{% else %}
+					<tr>
+						<td>{{ data2.name }}</td>
+						<td>{{ data2.children[0].name }}</td>
+					</tr>
+				{% endif %}
+			</tbody>
+		</table>
+		{% endif %}
+		{% if energy_type != '' and weather_type != '' %}
+		<h4>{{ energy_type }}</h4>
+		<table>
+			<thead>
+				<tr>
+					<th>Time</th>
+					<th>Value</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% if data1.children is iterable %}
+					{% for item in data1.children %}
+					<tr>
+						<td>{{ item.name }}</td>
+						<td>{{ item.children[0].name }}</td>
+					</tr>
+					{% endfor %}
+				{% else %}
+					<tr>
+						<td>{{ data1.name }}</td>
+						<td>{{ data1.children[0].name }}</td>
+					</tr>
+				{% endif %}
+			</tbody>
+		</table>
+		<h4>{{ weather_type }}</h4>
+		<table>
+			<thead>
+				<tr>
+					<th>Time</th>
+					<th>Value</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% if data2.children is iterable %}
+					{% for item in data2.children %}
+					<tr>
+						<td>{{ item.name }}</td>
+						<td>{{ item.children[0].name }}</td>
+					</tr>
+					{% endfor %}
+				{% else %}
+					<tr>
+						<td>{{ data2.name }}</td>
+						<td>{{ data2.children[0].name }}</td>
+					</tr>
+				{% endif %}
+			</tbody>
+		</table>
+		{% endif %}
+	</div>
+</body>
+</html>

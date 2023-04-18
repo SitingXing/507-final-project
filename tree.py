@@ -55,6 +55,42 @@ class Node:
         else:
             return None
 
+    def to_dict(self):
+        """Recursively convert the node and its children into a dictionary.
+
+        Returns
+        ------------
+        dict:
+            A dictionary representation of the node and its children.
+            The dictionary has two keys:
+            - 'data': The name of the node.
+            - 'children': A list of dictionaries, each representing a child node.
+        """
+        d = {'data': self.name}
+        if self.children:
+            d['children'] = [child.to_dict() for child in self.children]
+        return d
+
+
+def print_tree(node, level=0):
+    """
+    Prints the tree structure with indentation to show the hierarchical relationship between the nodes.
+
+    Parameters
+    ------------
+    node: object
+        the Node object to start printing from
+    level: int
+        the current level of indentation
+
+    Returns
+    ------------
+    None
+    """
+    print('   ' * level + str(node.name))
+    for child in node.children:
+        print_tree(child, level+1)
+
 
 def construct_state_tree(state_info, coal_data, elec_data, gas_data, temp_data, prec_data, wind_data):
     """
@@ -95,30 +131,51 @@ def construct_state_tree(state_info, coal_data, elec_data, gas_data, temp_data, 
         for month in ['Q1', 'Q2', 'Q3', 'Q4']:
             month_node = energy.children[0].add_child(str(year) + '-' + month)
             try:
-                if month_node.name == coal_data['data'][coal_index]['time']:
-                    month_node.add_child(coal_data['data'][coal_index]['value'])
+                if len(coal_data['data']) != 0:
+                    if month_node.name == coal_data['data'][coal_index]['time']:
+                        month_node.add_child(coal_data['data'][coal_index]['value'])
+                        coal_index -= 1
+                    else:
+                        month_node.add_child('None')
+                else:
+                    month_node.add_child('None')
                     coal_index -= 1
             except IndexError:
-                break
+                month_node.add_child('None')
 
-    for type in ['electricity', 'natural gas']:
-        if type == 'electricity':
-            data = elec_data
-            index = 1
-        else:
-            data = gas_data
-            index = 2
+    elec_index = -1
+    for year in range(2015, 2023):
+        for month in ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']:
+            month_node = energy.children[1].add_child(str(year) + '-' + month)
+            try:
+                if len(elec_data['data']) != 0:
+                    if month_node.name == elec_data['data'][elec_index]['date']:
+                        month_node.add_child(elec_data['data'][elec_index]['value'])
+                        elec_index -= 1
+                    else:
+                        month_node.add_child('None')
+                else:
+                    month_node.add_child('None')
+                    elec_index -= 1
+            except IndexError:
+                month_node.add_child('None')
 
-        eg_index = -1
-        for year in range(2015, 2023):
-            for month in ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']:
-                month_node = energy.children[index].add_child(str(year) + '-' + month)
-                try:
-                    if month_node.name == data['data'][index]['date']:
-                        month_node.add_child(data['data'][eg_index]['value'])
-                        eg_index -= 1
-                except IndexError:
-                    break
+    gas_index = -1
+    for year in range(2015, 2023):
+        for month in ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12']:
+            month_node = energy.children[2].add_child(str(year) + '-' + month)
+            try:
+                if len(gas_data['data']) != 0:
+                    if month_node.name == gas_data['data'][gas_index]['date']:
+                        month_node.add_child(gas_data['data'][gas_index]['value'])
+                        gas_index -= 1
+                    else:
+                        month_node.add_child('None')
+                else:
+                    month_node.add_child('None')
+                    gas_index -= 1
+            except IndexError:
+                month_node.add_child('None')
 
     for weather_type in ['temperature', 'precipitation', 'wind']:
         weather_node = weather.add_child(weather_type)
@@ -138,8 +195,30 @@ def construct_state_tree(state_info, coal_data, elec_data, gas_data, temp_data, 
                     if month_node.name == weather_data['data'][index]['date']:
                         month_node.add_child(weather_data['data'][index]['value'])
                         index += 1
+                    else:
+                        month_node.add_child('None')
                 except IndexError:
-                    break
+                    month_node.add_child('None')
+
+        quar_index = 0
+        for year in range(2015, 2023):
+            for quarter in ['Q1', 'Q2', 'Q3', 'Q4']:
+                quarter_node = weather_node.add_child(str(year) + '-' + quarter)
+                try:
+                    sum = 0
+                    count = 0
+                    for i in range(3):
+                        if weather_node.children[quar_index].children[0].name != 'None':
+                            sum += float(weather_node.children[quar_index].children[0].name)
+                            count += 1
+                        quar_index += 1
+                    if count == 0:
+                        quarter_node.add_child('None')
+                    else:
+                        avg = sum / count
+                        quarter_node.add_child(round(avg, 2))
+                except IndexError:
+                    quarter_node.add_child('None')
 
     return state
 
@@ -164,7 +243,7 @@ def get_data_from_cache(filename):
     return data
 
 
-def main():
+def construct_tree():
     """
     Load data from cache and construct state trees for each state.
 
@@ -194,6 +273,27 @@ def main():
         state_tree = construct_state_tree(states_info[i], coal_data[i], electricity_data[i], natural_gas_data[i], temperature_data[i], precipitation_data[i], wind_data[i])
         root.children.append(state_tree)
 
+    return root
+
+
+def tree_to_json(filename):
+    """
+    Given a filename, writes the tree to a JSON file.
+
+    Parameters
+    ------------
+    filename: string
+        The path of the JSON file to write.
+
+    Returns
+    ------------
+    None
+    """
+    tree = construct_tree()
+    tree_dict = tree.to_dict()
+    with open(filename, 'w') as file:
+        json.dump(tree_dict, file)
+
 
 if __name__ == '__main__':
-    main()
+    tree_to_json('tree.json')

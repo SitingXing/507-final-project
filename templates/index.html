@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Energy and Weather</title>
+	<style>
+		*{
+			font-family: sans-serif;
+			background-color: rgb(234, 234, 234);
+		}
+
+		h1{
+			margin-top: 0;
+			padding: 0.75%;
+			padding-top: 2%;
+			padding-left: 2%;
+			color: white;
+			background-color: #065C38;
+			font-size: 1.45rem;
+			font-weight: 500;
+		}
+
+		form{
+			margin: 30%;
+			margin-top: 10%;
+		}
+
+		div{
+			display: flex;
+			flex-direction: row;
+			column-gap: 10px;
+			align-items: center;
+			margin-bottom: 5%;
+		}
+
+		label{
+			font-size: 1.25rem;
+			font-weight: 600;
+			color: #065C38;
+		}
+
+		select{
+			background-color: white;
+			font-size: 1rem;
+			font-weight: 500;
+			width: 100%;
+			text-align: center;
+			border: solid transparent 0px;
+			border-radius: 25px;
+			padding: 1%;
+			color: rgb(81, 81, 81);
+			cursor: pointer;
+		}
+
+		input{
+			width: 100%;
+			color: white;
+			font-size: 1.25rem;
+			border: solid transparent 0px;
+			border-radius: 25px;
+			background-color: #065C38;
+			padding: 1%;
+			cursor: pointer;
+		}
+
+		input:hover{
+			background-color: #277c59;
+		}
+
+		input:disabled{
+			background-color: #849990;
+		}
+	</style>
+</head>
+<body>
+	<h1>Explore Energy Consumption and Weather Pattern</h1>
+	<form action="/" method="post">
+		<div>
+			<label for="state">State:</label>
+			<select name="state" id="state">
+				<option value="">--Select State--</option>
+				{% for state in states %}
+					<option value="{{state}}">{{state}}</option>
+				{% endfor %}
+			</select>
+		</div>
+		<br>
+		<div>
+			<label for="energy_type">Energy:</label>
+			<select name="energy_type" id="energy_type">
+				<option value="">--Select Energy Type--</option>
+				<option value="coal">Coal</option>
+				<option value="electricity">Electricity</option>
+				<option value="natural gas">Natural Gas</option>
+			</select>
+			<label for="weather_type">Weather:</label>
+			<select name="weather_type" id="weather_type">
+				<option value="">--Select Weather Type--</option>
+				<option value="temperature">Temperature</option>
+				<option value="precipitation">Precipitation</option>
+				<option value="wind">Wind</option>
+			</select>
+		</div>
+		<br>
+		<div>
+			<label for="time">Time:</label>
+			<select name="month" id="month">
+				<option value="">--Select A Month--</option>
+						{% for month in months %}
+							<option value="{{month}}">{{month}}</option>
+						{% endfor %}
+					</select>
+					<select name="quarter" id="quarter" disabled>
+				<option value="">--Select A Quarter--</option>
+						{% for quat in quats %}
+							<option value="{{quat}}">{{quat}}</option>
+						{% endfor %}
+			</select>
+		</div>
+		<br>
+		<div>
+			<label for="presentation_type">Presentation:</label>
+			<select name="presentation_type" id="presentation_type">
+				<option value="">--Select Presentation Type--</option>
+				<option value="table">Table</option>
+				<option value="line">Line Chart</option>
+				<option value="bar">Bar Chart</option>
+			</select>
+		</div>
+		<br>
+		<input type="submit" value="Submit" disabled>
+	</form>
+
+
+    <script>
+		const presentation_type = document.querySelector("#presentation_type")
+        const energyTypeSelected = document.querySelector("#energy_type");
+        const month = document.querySelector("#month");
+        const quarter = document.querySelector("#quarter");
+		const button = document.querySelector("input");
+
+		presentation_type.addEventListener("change", () => {
+			if (presentation_type.value === '') {
+				button.disabled = true;
+			} else {
+				button.disabled = false;
+			};
+		});
+
+        energyTypeSelected.addEventListener("change", () => {
+            if (energyTypeSelected.value === 'coal') {
+                month.disabled = true;
+                quarter.disabled = false;
+            } else {
+                month.disabled = false;
+                quarter.disabled = true;
+            }
+        });
+    </script>
+</body>
+</html>
