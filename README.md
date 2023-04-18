@@ -35,7 +35,17 @@ The Flask app in this project includes a user interface that allows users to int
 4. Back to generate new search: Users can click on the "Back to Search" button at the top right corner to go back to the search page and generate new searching.
 
 <h3>Supply API Key</h3>
+The data used in this project have been all cached into json files, and provided inside the repo. Also, data used to construct the flask app are from cache files. So, typically, if only running the project, there is no need for new api key or token. 
+
+However, if there is a special need (for example, for different or new time period), you can update the api key and token.
+1. Get api key and token for two api: EIA api -- https://www.eia.gov/opendata/index.php to register an account; NOAA api -- https://www.ncdc.noaa.gov/cdo-web/token to request a token.
+2. Update key and token: Copy your own api key and token into file API_key.txt. Update the time period you want with the format "yyyy-mm-dd".
+3. Get new data and cache files: Run the following code files: coal data.py, electricity data.py, natural gas data.py, weather data.py. The new cache files can be found in folder: energy_data_cache, weather_data_cache.
+
 <h3>Other Special Instructions</h3>
+1. If getting new data from api, because both api dataset used in the project have a large load on data accessing, there will be error happening if fetching too much data. So the code is set to wait 60 sec and try again if there is too frequent request error happened to allow fetching all data needed. The program will print out "wait" to indicate the issue.
+
+2. The NOAA API may be down sometimes. Please check the NOAA website status for the situation.
 
 <h2>Required Packages</h2>
 
