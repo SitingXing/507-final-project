@@ -48,42 +48,97 @@ However, if there is a special need (for example, for different or new time peri
 2. The NOAA API may be down sometimes. Please check the NOAA website status for the situation.
 
 <h2>Required Packages</h2>
-Flask
-plotly
+<ul>
+  <li>Flask</li>
+  <li>plotly</li>
+</ul>
 
 <h2>Data Structure</h2>
 The project uses a tree data structure to organize data from two api.
 The tree data structure consisting of several nodes connected by edges. The top is the root node, which is USA. It has 50 child nodes below it, which are 50 states. Each state has 2 child nodes, one energy node, one weather node. Energy node has 3 children for 3 energy types – coal, electricity, and natural gas. Weather node has 3 children for 3 weather data types – temperature, precipitation, and wind. Each of these child nodes have 96 child nodes for each month from 2015 to 2022 and sub-child for the value of the data, except coal data which is separated by quarters with 32 child nodes for each quarter from 2015 to 2022. Basically, the tree is like below:
-- USA
-      - Alabama
-          - Energy
-              - Coal
-                  2015-Q1
-                      <value>
-                  …
-                  2022-Q4
-                      <value>
-              - Electricity
-                  2015-01
-                  …
-                  2022-12
-              - Natural gas
-                  2015-01
-                  …
-                  2022-12
-          - Weather
-              - Temperature
-                  2015-01
-                  …
-                  2022-12
-              - Precipitation
-                  2015-01
-                  …
-                  2022-12
-              - Wind
-                  2015-01
-                  …
-                  2022-12
-      - Alaska
-      …
-
+<ul>
+  <li>
+    USA
+    <ul>
+      <li>
+        Alabama
+        <ul>
+          <li>
+            Energy
+            <ul>
+              <li>
+                Coal
+                <ul>
+                  <li>
+                    2015-Q1
+                    <ul>
+                      <li>value</li>
+                    </ul>
+                  </li>
+                  <li>…</li>
+                  <li>
+                    2022-Q4
+                    <ul>
+                      <li>value</li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                Electricity
+                <ul>
+                  <li>2015-01</li>
+                  <li>…</li>
+                  <li>2022-12</li>
+                </ul>
+              </li>
+              <li>
+                Natural gas
+                <ul>
+                  <li>2015-01</li>
+                  <li>…</li>
+                  <li>2022-12</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li>
+            Weather
+            <ul>
+              <li>
+                Temperature
+                <ul>
+                  <li>2015-01</li>
+                  <li>…</li>
+                  <li>2022-12</li>
+                </ul>
+              </li>
+              <li>
+                Precipitation
+                <ul>
+                  <li>2015-01</li>
+                  <li>…</li>
+                  <li>2022-12</li>
+                </ul>
+              </li>
+              <li>
+                Wind
+                <ul>
+                  <li>2015-01</li>
+                  <li>…</li>
+                  <li>2022-12</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>
+        Alaska
+      </li>
+      <li>
+        …
+      </li>
+    </ul>
+  </li>
+</ul>
