@@ -43,7 +43,7 @@ However, if there is a special need (for example, for different or new time peri
 3. Get new data and cache files: Run the following code files: coal data.py, electricity data.py, natural gas data.py, weather data.py. The new cache files can be found in folder: energy_data_cache, weather_data_cache.
 
 <h3>Other Special Instructions</h3>
-1. If getting new data from api, because both api dataset used in the project have a large load on data accessing, there will be error happening if fetching too much data. So the code is set to wait 60 sec and try again if there is too frequent request error happened to allow fetching all data needed. The program will print out "wait" to indicate the issue.
+  1. If getting new data from api, because both api dataset used in the project have a large load on data accessing, there will be error happening if fetching too much data. So the code is set to wait 60 sec and try again if there is too frequent request error happened to allow fetching all data needed. The program will print out "wait" to indicate the issue.
 
 2. The NOAA API may be down sometimes. Please check the NOAA website status for the situation.
 
