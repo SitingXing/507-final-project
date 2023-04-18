@@ -87,9 +87,15 @@ def print_tree(node, level=0):
     ------------
     None
     """
-    print('   ' * level + str(node.name))
-    for child in node.children:
-        print_tree(child, level+1)
+    line = '   ' * level + str(node.name)
+    print(line)
+    with open('example_tree.txt', 'a') as file:
+        file.write(f'{line}\n')
+    if node.children:
+        for child in node.children:
+            print_tree(child, level+1)
+    else:
+        return
 
 
 def construct_state_tree(state_info, coal_data, elec_data, gas_data, temp_data, prec_data, wind_data):
@@ -297,3 +303,5 @@ def tree_to_json(filename):
 
 if __name__ == '__main__':
     tree_to_json('tree.json')
+    # tree = construct_tree()
+    # lines = print_tree(tree.children[0])
