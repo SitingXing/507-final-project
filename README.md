@@ -44,7 +44,6 @@ However, if there is a special need (for example, for different or new time peri
 
 <h3>Other Special Instructions</h3>
 1. If getting new data from api, because both api dataset used in the project have a large load on data accessing, there will be error happening if fetching too much data. So the code is set to wait 60 sec and try again if there is too frequent request error happened to allow fetching all data needed. The program will print out "wait" to indicate the issue.
-
 2. The NOAA API may be down sometimes. Please check the NOAA website status for the situation.
 
 <h2>Required Packages</h2>
