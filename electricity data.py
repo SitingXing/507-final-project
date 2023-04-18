@@ -71,7 +71,10 @@ def main():
     ------------
     None
     """
-    api_key = "jCnI1kooKyyN0nuTyus3NlQS7hyHMVgcZvm3MTrR"
+    with open('API_key.txt', 'r') as file:
+        key_data = file.readlines()
+
+    api_key = key_data[0].split(':')[1].strip()
 
     with open('state info.json', 'r') as file:
         data = json.load(file)

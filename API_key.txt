@@ -1,0 +1,4 @@
+EIA_API_key: jCnI1kooKyyN0nuTyus3NlQS7hyHMVgcZvm3MTrR
+NOAA_API_token: GdMKePAkDaODqUBDSWbvYnpxcGPsTEfF
+start_date: 2015-01-01
+end_date: 2022-12-31

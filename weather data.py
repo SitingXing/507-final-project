@@ -108,9 +108,12 @@ def main():
     ------------
     None
     """
-    token = 'GdMKePAkDaODqUBDSWbvYnpxcGPsTEfF'
-    start_date = '2015-01-01'
-    end_date = '2022-12-31'
+    with open('API_key.txt', 'r') as file:
+        key_data = file.readlines()
+
+    token = key_data[1].split(':')[1].strip()
+    start_date = key_data[2].split(':')[1].strip()
+    end_date = key_data[3].split(':')[1].strip()
 
     data_type_ids = ['TAVG', 'PRCP', 'AWND']
 
