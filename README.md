@@ -30,7 +30,7 @@ The Flask app in this project includes a user interface that allows users to int
 
 2. View results: The Flask app generates the table and graph using Plotly's visualization tools based on users' options and displays it to the user within the application. The user can interact with the graph by hovering over data points, zooming in/out, and more.
 
-3. Save or share graph: Users have the option to save the generated graph. For example, the user is able to download the graph as an image.
+3. Save graph: Users have the option to save the generated graph. For example, the user is able to download the graph as an image.
 
 4. Back to generate new search: Users can click on the "Back to Search" button at the top right corner to go back to the search page and generate new searching.
 
